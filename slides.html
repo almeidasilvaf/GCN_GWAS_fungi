@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Priorização de genes de resistência a fungos em soja por meio da integração de associação genômica ampla e redes de coexpressão gênica</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Fabrício de Almeida Silva" />
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+    <script src="libs/d3-4.5.0/d3.min.js"></script>
+    <script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
+    <link rel="stylesheet" href="assets/venanciolab-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="assets/venanciolab.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Priorização de genes de resistência a fungos em soja por meio da integração de associação genômica ampla e redes de coexpressão gênica
+### Fabrício de Almeida Silva
+### PGBV/UENF
+### Junho, 2021
+
+---
+
+
+
+
+
+
+background-image: url(figs/intro1.png)
+background-position: 95% 50%
+background-size: 45%
+
+## Introdução
+
+&lt;br /&gt;
+
+.pull-left[
+Soja e economia: 2% do PIB .font80[(EMBRAPA, 2019)]
+
+
+Produção de alimentos deve aumentar em 50% até 2030 .font80[(Hartman et al., 2014)]
+
+
+Desafio: desperdício de alimentos .font80[(FAO, 2014)]
+
+
+Bilhões de dólares gastos anualmente no controle de pragas e doenças .font80[(Osman et al., 2015)]
+
+
+Agrotóxicos: danos ambientais e à saúde
+
+
+Aumento sustentável na produtividade .font80[(FAO, 2014)]
+
+]
+
+---
+
+background-image: url(figs/intro2.png)
+background-position: 95% 50%
+background-size: 45%
+
+## Introdução
+
+&lt;br /&gt;
+
+.pull-left[
+
+**Estresse biótico:** patógenos (fungos, bactérias, vírus e parasitas) e pragas (insetos)
+
+Perda de produtividade por:
+
+1. Lesão foliar
+
+2. Apodrescimento de raízes
+
+3. Danos a sementes
+
+4. Tamanho reduzido
+
+5. Morte
+]
+
+---
+
+background-image: url(figs/intro3.png)
+background-position: 50% 45%
+background-size: 70%
+
+## Doenças de soja
+
+&lt;br /&gt;
+
+&lt;br /&gt;
+
+&lt;br /&gt;
+
+&lt;br /&gt;
+
+&lt;br /&gt;
+
+&lt;br /&gt;
+
+&lt;br /&gt;
+
+&lt;br /&gt;
+
+&lt;br /&gt;
+
+&lt;br /&gt;
+
+&lt;br /&gt;
+
+.center[Fungos e nematoides causam as maiores perdas de produtividade em plantações de soja.]
+
+.footnote[Bandara *et al.*, 2020]
+
+---
+
+background-image: url(figs/intro4.png)
+background-position: 95% 50%
+background-size: 50%
+
+## Imunidade de plantas
+
+&lt;br /&gt;
+
+.pull-left[
+
+Corrida armamentista na defesa de plantas:
+
+- Imunidade desencadeada por PAMPs
+
+- Imunidade desencadeada por efetores
+
+Muitos genes envolvidos:
+
+1. Reconhecimento
+
+2. Transdução de sinal com intercomunicação
+
+3. Produção de ROS e estresse oxidativo
+
+4. Proteínas de defesa (e.g., PRs)
+
+5. Produção de barreiras mecânicas
+
+.footnote[Song *et al.*, 2020]
+
+]
+
+---
+
+background-image: url(figs/gwas_example1.png)
+background-position: 50% 60%
+background-size: 90%
+
+
+## Estudos de associação genômica ampla (GWAS)
+
+&lt;br /&gt;
+
+Identificação de variantes genéticas associadas a certo fenótipo (*e.g.* resistência a uma doença).
+
+---
+
+background-image: url(figs/gwas_example2.png)
+background-position: 50% 60%
+
+## Estudos de associação genômica ampla (GWAS)
+
+&lt;br /&gt;
+
+Identificação de variantes genéticas associadas a certo fenótipo (*e.g.* resistência a uma doença).
+
+
+---
+
+background-image: url(figs/gwas_example3.png)
+background-position: 50% 60%
+
+
+## Estudos de associação genômica ampla (GWAS)
+
+&lt;br /&gt;
+
+Identificação de variantes genéticas associadas a certo fenótipo (*e.g.* resistência a uma doença).
+
+---
+
+## O problema de pesquisa
+
+&lt;br /&gt;
+
+GWAS identificaram **SNPs causais** relacionados a resistência a doenças fúngicas, mas não **genes causais**.
+
+Métodos atuais resultam em altas taxas de falso-positivos e falso-negativos.
+
+&lt;br /&gt;
+
+![](figs/gwas_problem_1.png)&lt;!-- --&gt;
+
+**Problema:** muitos falso-negativos
+
+---
+
+## O problema de pesquisa
+
+&lt;br /&gt;
+
+GWAS identificaram **SNPs causais** relacionados a resistência a doenças fúngicas, mas não **genes causais**.
+
+Métodos atuais resultam em altas taxas de falso-positivos e falso-negativos.
+
+&lt;br /&gt;
+
+![](figs/gwas_problem_2.png)&lt;!-- --&gt;
+
+**Problema:** muitos falso-positivos
+
+---
+
+## A possível solução
+
+&lt;br /&gt;
+
+Vértices representam genes e arestas representam os coeficientes de correlação entre eles.
+
+&lt;img src="figs/redes_example1.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+Em larga escala, é possível detectar **módulos** de genes com funções similares.
+
+---
+
+## A possível solução
+
+<div id="htmlwidget-8623ebbd1e64a71375ce" style="width:1200px;height:600px;" class="forceNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8623ebbd1e64a71375ce">{"x":{"links":{"source":[1,2,3,3,4,5,6,7,8,9,11,11,11,11,12,13,14,15,17,18,18,19,19,19,20,20,20,20,21,21,21,21,21,22,22,22,22,22,22,23,23,23,23,23,23,23,23,23,24,24,25,25,25,26,26,26,26,27,27,27,27,27,28,28,29,29,29,30,31,31,31,31,32,33,33,34,34,35,35,35,36,36,36,36,37,37,37,37,37,38,38,38,38,38,38,39,40,41,41,42,42,42,43,43,43,44,44,45,47,48,48,48,48,49,49,50,50,51,51,51,52,52,53,54,54,54,55,55,55,55,55,55,55,55,55,55,56,56,57,57,57,58,58,58,58,58,59,59,59,59,60,60,60,61,61,61,61,61,61,62,62,62,62,62,62,62,62,63,63,63,63,63,63,63,63,64,64,64,64,64,64,64,64,64,64,65,65,65,65,65,65,65,65,65,65,66,66,66,66,66,66,66,66,66,67,68,68,68,68,68,68,69,69,69,69,69,69,69,70,70,70,70,70,70,70,70,71,71,71,71,71,71,71,71,72,72,72,73,74,74,75,75,75,75,75,75,75,76,76,76,76,76,76,76],"target":[0,0,0,2,0,0,0,0,0,0,10,3,2,0,11,11,11,11,16,16,17,16,17,18,16,17,18,19,16,17,18,19,20,16,17,18,19,20,21,16,17,18,19,20,21,22,12,11,23,11,24,23,11,24,11,16,25,11,23,25,24,26,11,27,23,27,11,23,30,11,23,27,11,11,27,11,29,11,34,29,34,35,11,29,34,35,36,11,29,34,35,36,37,11,29,25,25,24,25,41,25,24,11,26,27,28,11,28,46,47,25,27,11,26,11,49,24,49,26,11,51,39,51,51,49,26,51,49,39,54,26,11,16,25,41,48,49,55,55,41,48,55,48,27,57,11,58,55,48,57,48,58,59,48,58,60,59,57,55,55,58,59,48,57,41,61,60,59,48,62,57,58,61,60,55,55,62,48,63,58,61,60,59,57,11,63,64,48,62,58,61,60,59,57,55,64,58,59,62,65,48,63,61,60,57,25,11,24,27,48,41,25,68,11,24,27,48,41,25,69,68,11,24,27,41,58,27,69,68,70,11,48,41,25,26,27,11,48,48,73,69,68,25,48,41,70,71,64,65,66,63,62,48,58],"value":[1,8,10,6,1,1,1,1,2,1,1,3,3,5,1,1,1,1,4,4,4,4,4,4,3,3,3,4,3,3,3,3,5,3,3,3,3,4,4,3,3,3,3,4,4,4,2,9,2,7,13,1,12,4,31,1,1,17,5,5,1,1,8,1,1,1,2,1,2,3,2,1,1,2,1,3,2,3,3,2,2,2,2,1,2,2,2,2,1,2,2,2,2,2,1,1,1,2,3,2,2,1,3,1,1,3,1,2,1,2,1,1,1,3,2,1,1,9,2,2,1,1,1,2,1,1,6,12,1,1,21,19,1,2,5,4,1,1,1,1,1,7,7,6,1,4,15,5,6,2,1,4,2,2,6,2,5,1,1,9,17,13,7,2,1,6,3,5,5,6,2,4,3,2,1,5,12,5,4,10,6,2,9,1,1,5,7,3,5,5,5,2,5,1,2,3,3,1,2,2,1,1,1,1,3,5,1,1,1,1,1,6,6,1,1,2,1,1,4,4,4,1,1,1,1,1,1,2,2,2,1,1,1,1,2,1,1,2,2,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Myriel","Napoleon","Mlle.Baptistine","Mme.Magloire","CountessdeLo","Geborand","Champtercier","Cravatte","Count","OldMan","Labarre",null,"Marguerite","Mme.deR","Isabeau","Gervais","Tholomyes","Listolier","Fameuil","Blacheville","Favourite","Dahlia","Zephine","Fantine","Mme.Thenardier","Thenardier","Cosette","Javert","Fauchelevent","Bamatabois","Perpetue","Simplice","Scaufflaire","Woman1","Judge","Champmathieu","Brevet","Chenildieu","Cochepaille","Pontmercy","Boulatruelle","Eponine","Anzelma","Woman2","MotherInnocent","Gribier","Jondrette","Mme.Burgon","Gavroche","Gillenormand","Magnon","Mlle.Gillenormand","Mme.Pontmercy","Mlle.Vaubois","Lt.Gillenormand","Marius","BaronessT","Mabeuf","Enjolras","Combeferre","Prouvaire","Feuilly","Courfeyrac","Bahorel","Bossuet","Joly","Grantaire","MotherPlutarch","Gueulemer","Babet","Claquesous","Montparnasse","Toussaint","Child1","Child2","Brujon","Mme.Hucheloup"],"group":[1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]},"options":{"NodeID":"name","Group":"group","colourScale":"d3.scaleOrdinal().domain([\"1\", \"2\"]).range([\"steelblue\", \"maroon\"])","fontSize":7,"fontFamily":"serif","clickTextSize":17.5,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":0.9,"zoom":false,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
+
+---
+
+## Objetivo
+
+&lt;br /&gt;
+.center[.font120[Identificar genes de soja relacionados à resistência a doenças fúngicas comuns a partir da integração de GWAS e redes de coexpressão gênica]]
+
+--
+
+&lt;br /&gt;
+.font130[.brand-charcoal[.bold[Objetivos específicos]]]
+
+- Criar banco de dados de SNPs relacionados à resistência a fungos em soja
+
+- Identificar acessos no banco de germoplasma do USDA com o maior número de alelos benéficos
+
+- Analisar o perfil transcricional de todos os genes candidatos para minerar os mais promissores
+
+- Criar um banco de dados de candidatos promissores a genes de resistência contra fungos
+
+- Identificar a quais vias metabólicas os genes estão associados
+
+---
+
+background-image: url(figs/old_methods1.png)
+background-size: cover
+
+## Metodologia
+
+---
+
+background-image: url(figs/old_methods2.png)
+background-size: cover
+
+## Metodologia
+
+---
+
+background-image: url(figs/old_methods3.png)
+background-size: cover
+
+## Metodologia
+
+---
+
+background-image: url(figs/package_logos.png)
+background-position: 95% 50%
+background-size: 40%
+
+## Desenvolvimento de softwares
+
+
+.pull-left[
+.brand-charcoal[.font130[.bold[BioNERO:]]]
+
+Pacote do R destinado a:
+- pré-processamento de dados de expressão
+- inferência de redes de coexpressão gênica
+- análises funcionais.
+
+&lt;br/ &gt;
+.brand-charcoal[.font130[.bold[cageminer:]]]
+
+Pacote do R destinado a: 
+- integrar GWAS e redes de coexpressão para priorizar genes candidatos 
+
+]
+
+---
+
+background-image: url(figs/project_workflow.png)
+background-size: 100%
+background-position: 50% 30%
+
+## Metodologia
+
+---
+
+background-image: url(figs/frequency_of_snps_and_transcriptome_samples_overlap.png)
+background-position: 95% 50%
+background-size: 45% 90%
+
+
+## Descrição dos dados
+
+&lt;br /&gt;
+
+.pull-left[
+.brand-charcoal[.font130[.bold[Critério de filtragem:]]]
+
+Uma espécie deve ser representada por: 
+- amostras de transcriptoma
+- SNPs significativos
+]
+
+---
+
+background-image: url(https://crop-protection-network.s3.amazonaws.com/articles/BSR-foliar-and-stem-symptoms-A.-sisson.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Descrição dos dados
+
+.pull-left[
+5 fungos fitopatogênicos comuns:
+
+- *Cadophora gregata:* causador da podridão parda da haste da soja
+
+.footnote[Fonte: Crop Protection Network]
+]
+
+---
+
+background-image: url(https://bsppjournals.onlinelibrary.wiley.com/cms/asset/df052881-7bbb-4915-9a88-c4b74a28c9b4/ppa12532-fig-0001-m.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Descrição dos dados
+
+.pull-left[
+5 fungos fitopatogênicos comuns:
+
+- *Cadophora gregata:* causador da podridão parda da haste da soja
+
+- *Fusarium graminearum:* causador da fusariose
+
+.footnote[Chiotta *et al.*, 2016]
+]
+
+---
+
+background-image: url(https://bugwoodcloud.org/images/768x512/5465755.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Descrição dos dados
+
+.pull-left[
+5 fungos fitopatogênicos comuns:
+
+- *Cadophora gregata:* causador da podridão parda da haste da soja
+
+- *Fusarium graminearum:* causador da fusariose
+
+- *Fusarium virguliforme:* causador da síndrome da morte súbita
+
+.footnote[Fonte: Daren Mueller]
+]
+
+---
+
+background-image: url(https://phytus.s3.amazonaws.com/apps/clubephytus-api/midia/a/5fcdcbb8/thumbnail.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Descrição dos dados
+
+.pull-left[
+5 fungos fitopatogênicos comuns:
+
+- *Cadophora gregata:* causador da podridão parda da haste da soja
+
+- *Fusarium graminearum:* causador da fusariose
+
+- *Fusarium virguliforme:* causador da síndrome da morte súbita
+
+- *Macrophomina phaseolina:* causador da podridão de carvão
+
+.footnote[Fonte: Elevagro]
+]
+
+---
+
+background-image: url(https://www.agrolink.com.br/upload/problemas/Phakopsora_pachyrhizi57.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Descrição dos dados
+
+.pull-left[
+5 fungos fitopatogênicos comuns:
+
+- *Cadophora gregata:* causador da podridão parda da haste da soja
+
+- *Fusarium graminearum:* causador da fusariose
+
+- *Fusarium virguliforme:* causador da síndrome da morte súbita
+
+- *Macrophomina phaseolina:* causador da podridão de carvão
+
+- *Phakopsora pachyrhizi:* causador da ferrugem asiática
+
+.footnote[Fonte: Agrolink]
+]
+
+---
+
+background-image: url(figs/snp_circos.png)
+background-position: 95% 95%
+background-size: 55% 95%
+
+## Descrição dos dados
+
+&lt;br /&gt;
+
+.pull-left-1[
+SNPs estão localizados em regiões abundantes em genes.
+]
+
+---
+
+## Descrição dos dados
+
+&lt;img src="figs/snp_dist.png" width="900px" height="500px" style="display: block; margin: auto;" /&gt;
+
+De modo geral, SNPs tendem a se concentrar em cromossomos especĩficos.
+
+---
+
+## Descrição dos dados
+
+&lt;img src="figs/snp_positions.png" width="900px" height="450px" style="display: block; margin: auto;" /&gt;
+
+Maioria dos SNPs em regiões intergênicas.
+
+---
+
+## Extração de genes candidatos
+
+&lt;br /&gt;
+
+&lt;img src="figs/simulation_genes_per_sliding_window.png" width="900px" height="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Priorização de genes candidatos
+
+![](figs/workflow.png)&lt;!-- --&gt;
+
+---
+
+## Priorização de genes candidatos
+
+.pull-left[
+
+&lt;br /&gt;
+
+- *Cadophora gregata:* **11** 
+
+- *Fusarium graminearum:* **59** 
+
+- *Fusarium virguliforme:* **191** 
+
+- *Macrophomina phaseolina:* **8** 
+
+- *Phakopsora pachyrhizi:* **3** 
+
+Defesa **altamente espécie-específica**
+
+]
+
+.pull-right[
+![](figs/venn_diagram_candidates.png)&lt;!-- --&gt;
+]
+
+---
+
+## Seleção de genes mais promissores
+
+&lt;br /&gt;
+Atribuição de *scores* aos genes candidatos priorizados:
+
+.font140[
+`$$S_i = r_{pb} \kappa$$`
+] 
+
+.center[
+onde:
+
+`\(\kappa\)` = 2 se o gene for um fator de transcrição
+
+`\(\kappa\)` = 2 se o gene for um *hub* (muito conectado)
+
+`\(\kappa\)` = 3 se o gene for um fator de transcrição e um *hub*
+
+]
+
+---
+
+## Seleção de genes mais promissores
+
+
+
+.panelset[
+.panel[.panel-name[C. gregata]
+
+&lt;table class="table table-condensed"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Gene &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Predicted function &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Role &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.16G170100 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cell wall biogenesis-related extensin 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Physical barrier &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.02G026700 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Transcriptional repressor SIN3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Transcriptional regulation &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.02G026900 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Galacturonosyltransferase &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Physical barrier &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.02G029300 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SAM domain-containing &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unknown &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.16G155100 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Aquaporin &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Oxidative stress &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.17G217000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Class V chitinase &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Antimicrobial activity &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.17G213600 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Calcium-binding EF hand &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Signalling &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.17G231800 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Clathrin adaptor EPSIN1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Recognition &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.02G047000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Thiosulfate sulfurtransferase/rhodanese &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Oxidative stress &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.16G150500 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unknown &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unknown &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+.panel[.panel-name[F. graminearum]
+
+&lt;table class="table table-condensed"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Gene &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Predicted function &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Role &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.17G087500 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SOUL heme-binding protein &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Oxidative stress &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.06G121300 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GRAS transcription factor &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Transcriptional regulation &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.05G070300 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tobamovirus multiplication 2A &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Recognition &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.04G013500 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BURP domain-containing protein &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Physical barrier &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.06G105000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ERF/AP2 transcription factor &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Transcriptional regulation &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.05G062400 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2OG-Fe(II) oxygenase &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Oxidative stress &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.05G063600 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ERF/AP2 transcription factor &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Transcriptional regulation &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.05G115700 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; RING domain ubiquitin E3 ligase &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Signalling &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.17G116100 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; MAPK signalling-related protein &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Signalling &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.05G103600 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Peroxidase &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Oxidative stress &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+.panel[.panel-name[F. virguliforme]
+
+&lt;table class="table table-condensed"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Gene &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Predicted function &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Role &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.13G081000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Nodulin-like amino acid transporter &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Transport &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.01G225600 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unknown &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unknown &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.02G210500 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; bHLH transcription factor &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Transcriptional regulation &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.01G162500 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BIG1 protein &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Programmed cell death &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.17G061400 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Peroxidase &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Oxidative stress &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.19G010100 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; HD-Zip transcription factor &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Transcriptional regulation &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.18G276800 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Amino acid transporter &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Oxidative stress &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.05G209900 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PLAC8 family protein &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Programmed cell death &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.14G025100 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Inositol-1,4,5-trisphosphate 5-phosphatase &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Signalling &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.19G117800 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unknown &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unknown &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+.panel[.panel-name[M. phaseolina]
+
+&lt;table class="table table-condensed"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Gene &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Predicted function &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Role &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.20G203900 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Type I serine/threonine protein phosphatase &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Signalling &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.08G316500 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Calmodulin-dependent protein kinase &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Signalling &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.06G187200 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; R-gene-mediated resistance, lipase &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SAR &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.09G218600 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cytochrome P450, family 707, subfamily A &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Phytohormone metabolism &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.09G216800 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Pectin acetylesterase &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Signalling &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.20G216600 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dof-type transcription factor &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Transcriptional regulation &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.08G332800 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Calcineurin B-like calcium sensor &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Signalling &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.18G301700 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Leucine-rich repeat receptor kinase (LRR-RK) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Recognition &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+.panel[.panel-name[P. pachyrhizi]
+
+&lt;table class="table table-condensed"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Gene &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Predicted function &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Role &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.15G125900 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Magnesium transporter CorA-like &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Transport &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Glyma.18G286900 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unknown &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unknown &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+]
+
+---
+
+background-image: url(figs/biorender_figure.png)
+background-size: 90% 90%
+
+---
+
+## Seleção de cultivares de interesse
+
+&lt;br /&gt;
+
+**Objetivo:** maior número de alelos benéficos e menor número de alelos prejudiciais.
+
+--
+
+.pull-left[
+.blue[.bold[A &amp;rarr; G]] 👍🏼  
+
+GG = 2
+
+AG = 1
+
+AA = 0
+
+]
+
+--
+
+.pull-right[
+
+.red[.bold[A &amp;rarr; G]] 👎🏻  
+
+GG = 0
+
+AG = 1
+
+AA = 2 
+
+]
+
+---
+
+## Seleção de cultivares de interesse
+
+&lt;br /&gt;
+
+
+
+.pull-left[
+&lt;img src="figs/table1.png" style="display: block; margin: auto 0 auto auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="figs/table2.png" style="display: block; margin: auto auto auto 0;" /&gt;
+
+]
+
+Ainda há espaço para piramidar alelos de resistência via MAS ou edição genômica
+
+---
+
+background-image: url(http://www.mcgilltribune.com/wp-content/uploads/2019/11/gene_editing.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Conclusão
+
+.pull-left[
+Identificamos genes candidatos promissores para desenvolver plantas de soja resistentes a 5 fungos fitopagênicos comuns por:
+
+- Edição genômica
+
+- Transgenia
+
+.footnote[Fonte: The McGill Tribune]
+
+]
+
+---
+
+background-image: url(https://www.agroscope.admin.ch/agroscope/en/home/topics/plant-production/plant-breeding/ackerpflanzen/selection_soja/_jcr_content/par/columncontrols/items/1/column/image/image.imagespooler.jpg/1473888418017/selection_soja_fleur.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Conclusão
+
+.pull-left[
+Identificamos genes candidatos promissores para desenvolver plantas de soja resistentes a 5 fungos fitopagênicos comuns por:
+
+- Edição genômica
+
+- Transgenia
+
+Identificamos acessos mais resistentes do banco de germoplasma do USDA que podem ser usados como genitores em programas de melhoramento;
+
+.footnote[Fonte: Agroscope]
+]
+
+---
+
+background-image: url(figs/package_logos.png)
+background-position: 95% 50%
+background-size: 40%
+
+## Conclusão
+
+.pull-left[
+Identificamos genes candidatos promissores para desenvolver plantas de soja resistentes a 5 fungos fitopagênicos comuns por:
+
+- Edição genômica
+
+- Transgenia
+
+Identificamos acessos mais resistentes do banco de germoplasma do USDA que podem ser usados como genitores em programas de melhoramento;
+
+
+Desenvolvemos 2 produtos (pacotes do R) que podem ser usados pela comunidade científica.
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

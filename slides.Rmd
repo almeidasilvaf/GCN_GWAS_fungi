@@ -1,0 +1,740 @@
+---
+title: "Priorização de genes de resistência a fungos em soja por meio da integração de associação genômica ampla e redes de coexpressão gênica"
+author: "Fabrício de Almeida Silva"
+institute: "PGBV/UENF"
+date: "Junho, 2021"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "assets/venanciolab-fonts.css", "assets/venanciolab.css"]
+    self_contained: false
+    seal: true
+    nature:
+      ratio: "16:9"
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "https://platform.twitter.com/widgets.js"
+      navigation:
+        scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, 
+  message = FALSE,
+  echo = FALSE,
+  fig.width = 7, fig.height = 2.5
+)
+options(htmltools.dir.version = TRUE)
+```
+
+```{r panels, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+background-image: url(figs/intro1.png)
+background-position: 95% 50%
+background-size: 45%
+
+## Introdução
+
+<br />
+
+.pull-left[
+Soja e economia: 2% do PIB .font80[(EMBRAPA, 2019)]
+
+
+Produção de alimentos deve aumentar em 50% até 2030 .font80[(Hartman et al., 2014)]
+
+
+Desafio: desperdício de alimentos .font80[(FAO, 2014)]
+
+
+Bilhões de dólares gastos anualmente no controle de pragas e doenças .font80[(Osman et al., 2015)]
+
+
+Agrotóxicos: danos ambientais e à saúde
+
+
+Aumento sustentável na produtividade .font80[(FAO, 2014)]
+
+]
+
+---
+
+background-image: url(figs/intro2.png)
+background-position: 95% 50%
+background-size: 45%
+
+## Introdução
+
+<br />
+
+.pull-left[
+
+**Estresse biótico:** patógenos (fungos, bactérias, vírus e parasitas) e pragas (insetos)
+
+Perda de produtividade por:
+
+1. Lesão foliar
+
+2. Apodrescimento de raízes
+
+3. Danos a sementes
+
+4. Tamanho reduzido
+
+5. Morte
+]
+
+---
+
+background-image: url(figs/intro3.png)
+background-position: 50% 45%
+background-size: 70%
+
+## Doenças de soja
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+.center[Fungos e nematoides causam as maiores perdas de produtividade em plantações de soja.]
+
+.footnote[Bandara *et al.*, 2020]
+
+---
+
+background-image: url(figs/intro4.png)
+background-position: 95% 50%
+background-size: 50%
+
+## Imunidade de plantas
+
+<br />
+
+.pull-left[
+
+Corrida armamentista na defesa de plantas:
+
+- Imunidade desencadeada por PAMPs
+
+- Imunidade desencadeada por efetores
+
+Muitos genes envolvidos:
+
+1. Reconhecimento
+
+2. Transdução de sinal com intercomunicação
+
+3. Produção de ROS e estresse oxidativo
+
+4. Proteínas de defesa (e.g., PRs)
+
+5. Produção de barreiras mecânicas
+
+.footnote[Song *et al.*, 2020]
+
+]
+
+---
+
+background-image: url(figs/gwas_example1.png)
+background-position: 50% 60%
+background-size: 90%
+
+
+## Estudos de associação genômica ampla (GWAS)
+
+<br />
+
+Identificação de variantes genéticas associadas a certo fenótipo (*e.g.* resistência a uma doença).
+
+---
+
+background-image: url(figs/gwas_example2.png)
+background-position: 50% 60%
+
+## Estudos de associação genômica ampla (GWAS)
+
+<br />
+
+Identificação de variantes genéticas associadas a certo fenótipo (*e.g.* resistência a uma doença).
+
+
+---
+
+background-image: url(figs/gwas_example3.png)
+background-position: 50% 60%
+
+
+## Estudos de associação genômica ampla (GWAS)
+
+<br />
+
+Identificação de variantes genéticas associadas a certo fenótipo (*e.g.* resistência a uma doença).
+
+---
+
+## O problema de pesquisa
+
+<br />
+
+GWAS identificaram **SNPs causais** relacionados a resistência a doenças fúngicas, mas não **genes causais**.
+
+Métodos atuais resultam em altas taxas de falso-positivos e falso-negativos.
+
+<br />
+
+```{r}
+knitr::include_graphics("figs/gwas_problem_1.png")
+```
+
+**Problema:** muitos falso-negativos
+
+---
+
+## O problema de pesquisa
+
+<br />
+
+GWAS identificaram **SNPs causais** relacionados a resistência a doenças fúngicas, mas não **genes causais**.
+
+Métodos atuais resultam em altas taxas de falso-positivos e falso-negativos.
+
+<br />
+
+```{r}
+knitr::include_graphics("figs/gwas_problem_2.png")
+```
+
+**Problema:** muitos falso-positivos
+
+---
+
+## A possível solução
+
+<br />
+
+Vértices representam genes e arestas representam os coeficientes de correlação entre eles.
+
+```{r echo=FALSE, out.width='75%', fig.align='center'}
+knitr::include_graphics("figs/redes_example1.png")
+```
+
+Em larga escala, é possível detectar **módulos** de genes com funções similares.
+
+---
+
+## A possível solução
+
+```{r echo=FALSE, fig.align='center'}
+suppressPackageStartupMessages(library(networkD3))
+data("MisLinks")
+data("MisNodes")
+MisNodes$group <- 1
+MisNodes$group[MisNodes$name == "Valjean"] <- 2
+MisNodes$name[MisNodes$name == "Valjean"] <- "Guide"
+cols <- JS('d3.scaleOrdinal().domain(["1", "2"]).range(["steelblue", "maroon"])')
+
+forceNetwork(Links = MisLinks, Nodes = MisNodes,
+            Source = "source", Target = "target",
+            Value = "value", NodeID = "name",
+            Group = "group", colourScale = JS(cols),
+            opacity = 0.9, height=600, width=1200)
+```
+
+---
+
+## Objetivo
+
+<br />
+.center[.font120[Identificar genes de soja relacionados à resistência a doenças fúngicas comuns a partir da integração de GWAS e redes de coexpressão gênica]]
+
+--
+
+<br />
+.font130[.brand-charcoal[.bold[Objetivos específicos]]]
+
+- Criar banco de dados de SNPs relacionados à resistência a fungos em soja
+
+- Identificar acessos no banco de germoplasma do USDA com o maior número de alelos benéficos
+
+- Analisar o perfil transcricional de todos os genes candidatos para minerar os mais promissores
+
+- Criar um banco de dados de candidatos promissores a genes de resistência contra fungos
+
+- Identificar a quais vias metabólicas os genes estão associados
+
+---
+
+background-image: url(figs/old_methods1.png)
+background-size: cover
+
+## Metodologia
+
+---
+
+background-image: url(figs/old_methods2.png)
+background-size: cover
+
+## Metodologia
+
+---
+
+background-image: url(figs/old_methods3.png)
+background-size: cover
+
+## Metodologia
+
+---
+
+background-image: url(figs/package_logos.png)
+background-position: 95% 50%
+background-size: 40%
+
+## Desenvolvimento de softwares
+
+
+.pull-left[
+.brand-charcoal[.font130[.bold[BioNERO:]]]
+
+Pacote do R destinado a:
+- pré-processamento de dados de expressão
+- inferência de redes de coexpressão gênica
+- análises funcionais.
+
+<br/ >
+.brand-charcoal[.font130[.bold[cageminer:]]]
+
+Pacote do R destinado a: 
+- integrar GWAS e redes de coexpressão para priorizar genes candidatos 
+
+]
+
+---
+
+background-image: url(figs/project_workflow.png)
+background-size: 100%
+background-position: 50% 30%
+
+## Metodologia
+
+---
+
+background-image: url(figs/frequency_of_snps_and_transcriptome_samples_overlap.png)
+background-position: 95% 50%
+background-size: 45% 90%
+
+
+## Descrição dos dados
+
+<br />
+
+.pull-left[
+.brand-charcoal[.font130[.bold[Critério de filtragem:]]]
+
+Uma espécie deve ser representada por: 
+- amostras de transcriptoma
+- SNPs significativos
+]
+
+---
+
+background-image: url(https://crop-protection-network.s3.amazonaws.com/articles/BSR-foliar-and-stem-symptoms-A.-sisson.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Descrição dos dados
+
+.pull-left[
+5 fungos fitopatogênicos comuns:
+
+- *Cadophora gregata:* causador da podridão parda da haste da soja
+
+.footnote[Fonte: Crop Protection Network]
+]
+
+---
+
+background-image: url(https://bsppjournals.onlinelibrary.wiley.com/cms/asset/df052881-7bbb-4915-9a88-c4b74a28c9b4/ppa12532-fig-0001-m.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Descrição dos dados
+
+.pull-left[
+5 fungos fitopatogênicos comuns:
+
+- *Cadophora gregata:* causador da podridão parda da haste da soja
+
+- *Fusarium graminearum:* causador da fusariose
+
+.footnote[Chiotta *et al.*, 2016]
+]
+
+---
+
+background-image: url(https://bugwoodcloud.org/images/768x512/5465755.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Descrição dos dados
+
+.pull-left[
+5 fungos fitopatogênicos comuns:
+
+- *Cadophora gregata:* causador da podridão parda da haste da soja
+
+- *Fusarium graminearum:* causador da fusariose
+
+- *Fusarium virguliforme:* causador da síndrome da morte súbita
+
+.footnote[Fonte: Daren Mueller]
+]
+
+---
+
+background-image: url(https://phytus.s3.amazonaws.com/apps/clubephytus-api/midia/a/5fcdcbb8/thumbnail.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Descrição dos dados
+
+.pull-left[
+5 fungos fitopatogênicos comuns:
+
+- *Cadophora gregata:* causador da podridão parda da haste da soja
+
+- *Fusarium graminearum:* causador da fusariose
+
+- *Fusarium virguliforme:* causador da síndrome da morte súbita
+
+- *Macrophomina phaseolina:* causador da podridão de carvão
+
+.footnote[Fonte: Elevagro]
+]
+
+---
+
+background-image: url(https://www.agrolink.com.br/upload/problemas/Phakopsora_pachyrhizi57.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Descrição dos dados
+
+.pull-left[
+5 fungos fitopatogênicos comuns:
+
+- *Cadophora gregata:* causador da podridão parda da haste da soja
+
+- *Fusarium graminearum:* causador da fusariose
+
+- *Fusarium virguliforme:* causador da síndrome da morte súbita
+
+- *Macrophomina phaseolina:* causador da podridão de carvão
+
+- *Phakopsora pachyrhizi:* causador da ferrugem asiática
+
+.footnote[Fonte: Agrolink]
+]
+
+---
+
+background-image: url(figs/snp_circos.png)
+background-position: 95% 95%
+background-size: 55% 95%
+
+## Descrição dos dados
+
+<br />
+
+.pull-left-1[
+SNPs estão localizados em regiões abundantes em genes.
+]
+
+---
+
+## Descrição dos dados
+
+```{r fig1_snp_dist, out.width='900px', out.height='500px', fig.align='center'}
+knitr::include_graphics("figs/snp_dist.png")
+```
+
+De modo geral, SNPs tendem a se concentrar em cromossomos especĩficos.
+
+---
+
+## Descrição dos dados
+
+```{r fig1_snp_pos, out.width='900px', out.height='450px', fig.align='center'}
+knitr::include_graphics("figs/snp_positions.png")
+```
+
+Maioria dos SNPs em regiões intergênicas.
+
+---
+
+## Extração de genes candidatos
+
+<br />
+
+```{r all_cand, out.width='900px', out.height='500px', fig.align='center'}
+knitr::include_graphics("figs/simulation_genes_per_sliding_window.png")
+```
+
+---
+
+## Priorização de genes candidatos
+
+```{r workflow_cageminer, echo=FALSE}
+knitr::include_graphics("figs/workflow.png")
+```
+
+---
+
+## Priorização de genes candidatos
+
+.pull-left[
+
+<br />
+
+- *Cadophora gregata:* **11** 
+
+- *Fusarium graminearum:* **59** 
+
+- *Fusarium virguliforme:* **191** 
+
+- *Macrophomina phaseolina:* **8** 
+
+- *Phakopsora pachyrhizi:* **3** 
+
+Defesa **altamente espécie-específica**
+
+]
+
+.pull-right[
+```{r venn, echo=FALSE}
+knitr::include_graphics("figs/venn_diagram_candidates.png")
+```
+]
+
+---
+
+## Seleção de genes mais promissores
+
+<br />
+Atribuição de *scores* aos genes candidatos priorizados:
+
+.font140[
+$$S_i = r_{pb} \kappa$$
+] 
+
+.center[
+onde:
+
+$\kappa$ = 2 se o gene for um fator de transcrição
+
+$\kappa$ = 2 se o gene for um *hub* (muito conectado)
+
+$\kappa$ = 3 se o gene for um fator de transcrição e um *hub*
+
+]
+
+---
+
+## Seleção de genes mais promissores
+
+```{r genes_promissores_tabela}
+gene_role <- readr::read_csv(
+  "data/top_candidates_and_role.csv"
+)
+```
+
+.panelset[
+.panel[.panel-name[C. gregata]
+```{r cgregata_genetable}
+suppressPackageStartupMessages(library(formattable))
+cgregata <- gene_role[gene_role$`Resistance to` == "C. gregata", -3]
+formattable(cgregata, align=c('l', 'l', 'l'))
+```
+]
+.panel[.panel-name[F. graminearum]
+```{r fgraminearum_genetable}
+fgraminearum <- gene_role[gene_role$`Resistance to` == "F. graminearum", -3]
+formattable(fgraminearum, align=c('l', 'l', 'l'))
+```
+]
+.panel[.panel-name[F. virguliforme]
+```{r fvirguliforme_genetable}
+fvirguliforme <- gene_role[gene_role$`Resistance to` == "F. virguliforme", -3]
+formattable(fvirguliforme, align=c('l', 'l', 'l'))
+```
+]
+.panel[.panel-name[M. phaseolina]
+```{r mphaseolina_genetable}
+mphaseolina <- gene_role[gene_role$`Resistance to` == "M. phaseolina", -3]
+formattable(mphaseolina, align=c('l', 'l', 'l'))
+```
+]
+.panel[.panel-name[P. pachyrhizi]
+```{r ppachyrhizi_genetable}
+ppachyrhizi <- gene_role[gene_role$`Resistance to` == "P. pachyrhizi", -3]
+formattable(ppachyrhizi, align=c('l', 'l', 'l'))
+```
+]
+]
+
+---
+
+background-image: url(figs/biorender_figure.png)
+background-size: 90% 90%
+
+---
+
+## Seleção de cultivares de interesse
+
+<br />
+
+**Objetivo:** maior número de alelos benéficos e menor número de alelos prejudiciais.
+
+--
+
+.pull-left[
+.blue[.bold[A &rarr; G]] 👍🏼  
+
+GG = 2
+
+AG = 1
+
+AA = 0
+
+]
+
+--
+
+.pull-right[
+
+.red[.bold[A &rarr; G]] 👎🏻  
+
+GG = 0
+
+AG = 1
+
+AA = 2 
+
+]
+
+---
+
+## Seleção de cultivares de interesse
+
+<br />
+
+```{r cultivares, echo=FALSE, warning=FALSE, eval=FALSE}
+suppressPackageStartupMessages(library(formattable))
+acc <- read.csv("data/best_accessions_and_potential.txt", sep="\t")
+acc2 <- acc[, c(4,1,3,2)]
+acc2$Potential <- round(acc2$Potential, 2)
+acc2$Score <- round(acc2$Score, 2)
+formattable(acc2, 
+            align = c("l", "l", "r", "r"),
+            list(
+              Potential = color_bar("lightblue")
+              )
+            )
+``` 
+
+.pull-left[
+``` {r echo=FALSE, fig.align='right'}
+knitr::include_graphics("figs/table1.png")
+```
+]
+
+.pull-right[
+``` {r echo=FALSE, fig.align='left'}
+knitr::include_graphics("figs/table2.png")
+```
+
+]
+
+Ainda há espaço para piramidar alelos de resistência via MAS ou edição genômica
+
+---
+
+background-image: url(http://www.mcgilltribune.com/wp-content/uploads/2019/11/gene_editing.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Conclusão
+
+.pull-left[
+Identificamos genes candidatos promissores para desenvolver plantas de soja resistentes a 5 fungos fitopagênicos comuns por:
+
+- Edição genômica
+
+- Transgenia
+
+.footnote[Fonte: The McGill Tribune]
+
+]
+
+---
+
+background-image: url(https://www.agroscope.admin.ch/agroscope/en/home/topics/plant-production/plant-breeding/ackerpflanzen/selection_soja/_jcr_content/par/columncontrols/items/1/column/image/image.imagespooler.jpg/1473888418017/selection_soja_fleur.jpg)
+background-position: 95% 50%
+background-size: 40%
+
+## Conclusão
+
+.pull-left[
+Identificamos genes candidatos promissores para desenvolver plantas de soja resistentes a 5 fungos fitopagênicos comuns por:
+
+- Edição genômica
+
+- Transgenia
+
+Identificamos acessos mais resistentes do banco de germoplasma do USDA que podem ser usados como genitores em programas de melhoramento;
+
+.footnote[Fonte: Agroscope]
+]
+
+---
+
+background-image: url(figs/package_logos.png)
+background-position: 95% 50%
+background-size: 40%
+
+## Conclusão
+
+.pull-left[
+Identificamos genes candidatos promissores para desenvolver plantas de soja resistentes a 5 fungos fitopagênicos comuns por:
+
+- Edição genômica
+
+- Transgenia
+
+Identificamos acessos mais resistentes do banco de germoplasma do USDA que podem ser usados como genitores em programas de melhoramento;
+
+
+Desenvolvemos 2 produtos (pacotes do R) que podem ser usados pela comunidade científica.
+]

@@ -2,7 +2,7 @@
 title: "Prioritizing soybean resistance genes to fungi by integrating genome-wide association studies and gene coexpression networks"
 author: "Fabrício de Almeida Silva"
 institute: "PGBV/UENF"
-date: "Junho, 2021"
+date: "May, 2021"
 output:
   xaringan::moon_reader:
     lib_dir: libs

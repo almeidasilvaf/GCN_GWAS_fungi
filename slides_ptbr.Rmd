@@ -45,25 +45,12 @@ background-size: 45%
 Soja e economia: 2% do PIB .font80[(EMBRAPA, 2019)]
 
 
-Produção de alimentos deve aumentar em 50% até 2030 .font80[(Hartman et al., 2014)]
-
-
-Desafio: desperdício de alimentos .font80[(FAO, 2014)]
-
-
-Bilhões de dólares gastos anualmente no controle de pragas e doenças .font80[(Osman et al., 2015)]
-
-
-Agrotóxicos: danos ambientais e à saúde
-
-
-Aumento sustentável na produtividade .font80[(FAO, 2014)]
-
+Bilhões de dólares gastos anualmente no controle de doenças .font80[(Osman et al., 2015)]
 ]
 
 ---
 
-background-image: url(figs/intro2.png)
+background-image: url(https://www.researchgate.net/profile/Martin-Heil-2/publication/258202582/figure/fig7/AS:271915302518812@1441841068064/Examples-of-common-fungal-diseases-of-plants-a-Rust-on-flax-Linum-usitatissimum-C_Q640.jpg)
 background-position: 95% 50%
 background-size: 45%
 
@@ -72,10 +59,11 @@ background-size: 45%
 <br />
 
 .pull-left[
+Soja e economia: 2% do PIB .font80[(EMBRAPA, 2019)]
 
-**Estresse biótico:** patógenos (fungos, bactérias, vírus e parasitas) e pragas (insetos)
+Bilhões de dólares gastos anualmente no controle de doenças .font80[(Osman et al., 2015)]
 
-Perda de produtividade por:
+**Fungos fitopatogênicos** -  Perda de produtividade por:
 
 1. Lesão foliar
 
@@ -83,9 +71,12 @@ Perda de produtividade por:
 
 3. Danos a sementes
 
-4. Tamanho reduzido
+4. Morte
 
-5. Morte
+Agenda 2030: aumento sustentável da produtividade
+
+.footnote[García-Guzmán *et al.*, 2013]
+
 ]
 
 ---
@@ -607,7 +598,52 @@ formattable(ppachyrhizi, align=c('l', 'l', 'l'))
 ---
 
 background-image: url(figs/biorender_figure.png)
-background-size: 90% 90%
+background-size: 85% 85%
+background-position: 50% 90%
+
+.center[
+.red[*C. gregata*] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.blue[*F. graminearum*] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.brown[*F. virguliforme*] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.green[*M. phaseolina*] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.purple[*P. pachyrhizi*]
+]
+
+---
+
+## PAV no pangenoma de soja
+
+De modo geral, genes presentes em todos os 205 genomas.
+
+```{r pav, out.width='75%'}
+suppressPackageStartupMessages(library(ggiraph))
+suppressPackageStartupMessages(library(tidyverse))
+load(here::here("data", "pav_pangenome_table.rda"))
+colnames(freq_table)[1] <- "Gene"
+pav_plot_int <- freq_table %>%
+    arrange(Species, -Mean) %>%
+    mutate(index=1:nrow(freq_table)) %>%
+    ggplot(., aes(x=index, y=Mean)) +
+    geom_point_interactive(aes(tooltip=Gene, color=Species), size=1) +
+    ggsci::scale_color_aaas() +
+    theme_classic() +
+    labs(title="PAV of mined candidate genes in the soybean pangenome",
+         x="Gene index", y="Relative frequency") +
+    theme(legend.position="bottom")
+girafe(code = print(pav_plot_int), height_svg = 4, width_svg = 8)
+```
+
+---
+
+## PAV no pangenoma de soja
+
+```{r pangenome_paper1, fig.align='center', out.width='75%'}
+knitr::include_graphics("figs/pangenome_paper_cover.png")
+```
+
+```{r pangenome_paper2, fig.align='center', out.width='75%'}
+knitr::include_graphics("figs/pangenome_paper_highlight.png")
+```
 
 ---
 
@@ -713,7 +749,11 @@ Identificamos genes candidatos promissores para desenvolver plantas de soja resi
 
 - Transgenia
 
-Identificamos acessos mais resistentes do banco de germoplasma do USDA que podem ser usados como genitores em programas de melhoramento;
+Identificamos acessos mais resistentes do banco de germoplasma do USDA:
+
+- Genitores em programas de melhoramento
+
+- Editados com CRISPR-Cas para inserir os alelos faltantes
 
 .footnote[Fonte: Agroscope]
 ]
@@ -733,8 +773,11 @@ Identificamos genes candidatos promissores para desenvolver plantas de soja resi
 
 - Transgenia
 
-Identificamos acessos mais resistentes do banco de germoplasma do USDA que podem ser usados como genitores em programas de melhoramento;
+Identificamos acessos mais resistentes do banco de germoplasma do USDA:
 
+- Genitores em programas de melhoramento
 
-Desenvolvemos 2 produtos (pacotes do R) que podem ser usados pela comunidade científica.
+- Editados com CRISPR-Cas para inserir os alelos faltantes
+
+Desenvolvemos 2 produtos (pacotes do R) que podem ser usados para identificar candidatos para outras características.
 ]

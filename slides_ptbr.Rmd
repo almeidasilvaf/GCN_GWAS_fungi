@@ -597,7 +597,7 @@ formattable(ppachyrhizi, align=c('l', 'l', 'l'))
 
 ---
 
-background-image: url(figs/biorender_figure.png)
+background-image: url(figs/plant_defense_to_fungi_600dpi.png)
 background-size: 85% 85%
 background-position: 50% 90%
 
@@ -611,29 +611,24 @@ background-position: 50% 90%
 
 ---
 
+background-image: url(figs/PAV_analysis_A.png)
+background-size: 95%
+
 ## PAV no pangenoma de soja
 
 De modo geral, genes presentes em todos os 205 genomas.
 
-```{r pav, out.width='75%'}
-suppressPackageStartupMessages(library(ggiraph))
-suppressPackageStartupMessages(library(tidyverse))
-load(here::here("data", "pav_pangenome_table.rda"))
-colnames(freq_table)[1] <- "Gene"
-pav_plot_int <- freq_table %>%
-    arrange(Species, -Mean) %>%
-    mutate(index=1:nrow(freq_table)) %>%
-    ggplot(., aes(x=index, y=Mean)) +
-    geom_point_interactive(aes(tooltip=Gene, color=Species), size=1) +
-    ggsci::scale_color_aaas() +
-    theme_classic() +
-    labs(title="PAV of mined candidate genes in the soybean pangenome",
-         x="Gene index", y="Relative frequency") +
-    theme(legend.position="bottom")
-girafe(code = print(pav_plot_int), height_svg = 4, width_svg = 8)
-```
+---
+
+background-image: url(figs/PAV_analysis_B.png)
+background-size: 95%
+
+## PAV no pangenoma de soja
+
+Distribuição geográfica não explica padrões.
 
 ---
+
 
 ## PAV no pangenoma de soja
 
@@ -781,3 +776,20 @@ Identificamos acessos mais resistentes do banco de germoplasma do USDA:
 
 Desenvolvemos 2 produtos (pacotes do R) que podem ser usados para identificar candidatos para outras características.
 ]
+
+---
+
+class: sydney-yellow, middle, center
+
+## Contato
+
+`r icons::fontawesome("twitter")`  [@almeidasilvaf](https://twitter.com/almeidasilvaf)
+
+`r icons::fontawesome("github")`  [almeidasilvaf](https://github.com/almeidasilvaf/)
+
+`r icons::fontawesome("globe")`  [almeidasilvaf.github.io/home](https://almeidasilvaf.github.io/home/)
+
+`r icons::fontawesome("envelope")`  [fabricio_almeidasilva@hotmail.com](mailto:fabricio_almeidasilva@hotmail.com)
+
+`r icons::academicons("orcid")`  [Fabricio Almeida-Silva](https://orcid.org/0000-0002-5314-2964)
+
